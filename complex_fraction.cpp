@@ -7,15 +7,16 @@
 
 typedef std::complex< long > cpx;
 
-// ********************************************
-//
-//
 
 long gcd( long a, long b ) {
     if ( b == 0 ) return a;
     a %= b;
     return gcd( b, a );
 }
+
+// ***********************************************************************
+// class ComplexFraction
+// ***********************************************************************
 
 class ComplexFraction {
 private:
@@ -35,6 +36,11 @@ public:
     bool operator<=( const ComplexFraction &rhs );
     bool operator>=( const ComplexFraction &rhs );
 */
+    cpx get_numer();
+    cpx get_denom();
+    double real();
+    double imag();
+    double norm();
     ComplexFraction conjugate();
     ComplexFraction rationarize();
     ComplexFraction reduce();
@@ -55,23 +61,51 @@ ComplexFraction::ComplexFraction( cpx n, cpx d ) {
 
 ComplexFraction::~ComplexFraction() {  }
 
+cpx ComplexFraction::get_numer() {
+    return this->numer;
+}
+cpx ComplexFraction::get_denom() {
+    return this->denom;
+}
+
+double ComplexFraction::real() {
+    ComplexFraction f;
+    double res;
+    if ( (this->denom).imag() != 0 ) {
+        f = this->rationarize();
+    } else {
+        f = *this;
+    }
+    res = (f.numer).real() / (f.denom).real();
+    return res;
+}
+
+double ComplexFraction::imag() {
+    ComplexFraction f;
+    double res;
+    if ( (this->denom).imag() != 0 ) {
+        f = this->rationarize();
+    } else {
+        f = *this;
+    }
+    res = (f.numer).imag() / (f.denom).real();
+    return res;
+}
+
+double ComplexFraction::norm() {
+    ComplexFraction f;
+    double res;
+    if ( (this->denom).imag() != 0 ) {
+        f = this->rationarize();
+    } else {
+        f = *this;
+    }
+    res = std::norm( f.numer ) / abs( (f.denom).real() );
+    return res;
+}
+
 ComplexFraction ComplexFraction::reduce() {
     ComplexFraction f = *this;
-    // long a[3], num;
-    // a[0] + a[1]i
-    // ------------
-    //     a[2]
-    /*
-    a[0] = (this->numer).real();
-    a[1] = (this->numer).imag();
-    a[2] = (this->denom).real();
-    std::sort(a, a+3);
-    num = gcd( a[2], gcd(a[1], a[0]) );
-    if ( num != 1 ) {
-        f.numer = cpx( a[0]/num, a[1]/num );
-        f.denom = cpx( a[2]/num,     0    );
-    }
-    */
     long a, b, c, num;
     a = (this->numer).real();
     b = (this->numer).imag();
@@ -156,6 +190,7 @@ void ComplexFraction::print() {
     }
 }
 
+/*
 int main() {
     cpx a(1, 2), b(1, -2);
     ComplexFraction f = ComplexFraction(a, b);
@@ -163,3 +198,4 @@ int main() {
     (f+g).print();
     return 0;
 }
+*/
