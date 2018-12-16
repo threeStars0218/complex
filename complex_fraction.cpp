@@ -32,10 +32,12 @@ public:
 /*
     bool operator< ( const ComplexFraction &rhs );
     bool operator> ( const ComplexFraction &rhs );
-    bool operator==( const ComplexFraction &rhs );
     bool operator<=( const ComplexFraction &rhs );
     bool operator>=( const ComplexFraction &rhs );
 */
+    bool operator==( const ComplexFraction &rhs );
+    bool operator!=( const ComplexFraction &rhs );
+
     cpx get_numer();
     cpx get_denom();
     double real();
@@ -60,6 +62,14 @@ ComplexFraction::ComplexFraction( cpx n, cpx d ) {
 }
 
 ComplexFraction::~ComplexFraction() {  }
+
+bool ComplexFraction::operator==( const ComplexFraction &rhs ) {
+    return (this->numer == rhs.numer) && (this->denom == rhs.denom);
+}
+
+bool ComplexFraction::operator!=( const ComplexFraction &rhs ) {
+    return (this->numer != rhs.numer) || (this->denom != rhs.denom);
+}
 
 cpx ComplexFraction::get_numer() {
     return this->numer;
@@ -100,8 +110,8 @@ double ComplexFraction::norm() {
     } else {
         f = *this;
     }
-    res = std::norm( f.numer ) / abs( (f.denom).real() );
-    return res;
+    res = std::norm( f.numer ) / (f.denom).real()*(f.denom).real();
+    return sqrt( res );
 }
 
 ComplexFraction ComplexFraction::reduce() {
