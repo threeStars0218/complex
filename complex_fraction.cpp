@@ -110,7 +110,7 @@ double ComplexFraction::norm() {
     } else {
         f = *this;
     }
-    res = std::norm( f.numer ) / (f.denom).real()*(f.denom).real();
+    res = std::norm( f.numer ) / ( (f.denom).real()*(f.denom).real() );
     return sqrt( res );
 }
 
@@ -188,15 +188,20 @@ ComplexFraction ComplexFraction::operator-( const ComplexFraction &rhs ) {
 void ComplexFraction::print() {
     std::string nsgn = ( (this->numer).imag() < 0 ) ? " - " : " + ",
                 dsgn = ( (this->denom).imag() < 0 ) ? " - " : " + ";
-    std::cout << std::setw(  5 ) << (this->numer).real() << nsgn
+    std::cout << '\n'
+              << std::setw(  4 ) << ""
+              << std::setw(  5 ) << (this->numer).real() << nsgn
               << std::setw(  5 ) << abs( (this->numer).imag() ) << "i\n"
+              << std::setw(  4 ) << ""
               << std::setw( 15 ) << std::setfill('-')    << '\n'
               << std::setfill(' ');
     if ( (this->denom).imag() != 0 ) {
-        std::cout << std::setw( 5 ) << (this->denom).real() << dsgn
+        std::cout << std::setw( 4 ) << ""
+                  << std::setw( 5 ) << (this->denom).real() << dsgn
                   << std::setw( 5 ) << abs( (this->denom).imag() ) <<"i\n\n";
     } else {
-        std::cout << std::setw( 8 ) << (this->denom).real() << "\n\n";
+        std::cout << std::setw(  4 ) << ""
+                  << std::setw( 8 ) << (this->denom).real() << "\n\n";
     }
 }
 

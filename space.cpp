@@ -19,7 +19,7 @@ typedef struct _coefficient{
 } coefficient;
 
 bool is_in_h( ComplexFraction f ) {
-    return f.imag() > 0 || f.imag() == 0;
+    return f.imag() >= 0;
 }
 
 bool is_in_F( ComplexFraction f ) {

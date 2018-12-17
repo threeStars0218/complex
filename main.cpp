@@ -6,6 +6,7 @@ typedef std::pair< long, long > longpair;
 void print_fraction( long D ) {
     std::queue< coefficient > coef = get_coefficients( D );
     std::vector< ComplexFraction > frac = sequence( coef );
+    std::cout << "D = " << D << ":\n";
     for (int idx=0; idx<frac.size(); ++idx) {
         frac[idx].print();
     }
@@ -28,7 +29,7 @@ void class_number_table( std::queue< longpair > que ) {
 
 }
 
-void solve( long D ) {
+void mode_01( long D ) {
     std::queue< longpair > que;
     for (long num=D; num<0; ++num) {
         if ( (-num)%4 == 0 || (-num)%4 == 3 ) {
@@ -38,23 +39,38 @@ void solve( long D ) {
     class_number_table( que );
 }
 
+void mode_02( long D ) {
+    for (long num=D; num<0; ++num) {
+        if ( (-num)%4 == 0 || (-num)%4 == 3 ) {
+            print_fraction( num );
+        }
+    }
+}
+
 int main() {
-    long disc;
+    long disc, mode;
     std::cout << "THIS PROGRAM COMPUTES REPORT (9), \n"
               << "INPUT:\n"
               << "-----\n"
               << "  - LOWER BOUND OF DISCRIMINANT\n"
+              << "  - MODE YOU WANT TO USE\n"
               << "OUTPUT:\n"
               << "------\n"
               << "  - MODE 1 : CLASS NUMBER OF DISCRIMINANT\n"
-              << "  - MODE 2 : OUTPUT QUADRATIC IRATIONAL NUMBERS IN F\n"
-              << "             CORRESPOND TO DISCRIMINANT D.\n";
+              << "             (PROTOTYPE)\n"
+              << "  - MODE 2 : OUTPUT QUADRATIC IRATIONAL NUMBERS\n"
+              << "             CORRESPOND TO EACH DISCRIMINANT D.\n";
 
-    std::cout << "ENTER A LOWER BOUND OF DISCRIMINANT: \n";
-    std::cin >> disc;
+    std::cout << "\nENTER A LOWER BOUND OF DISCRIMINANT: ";
+    std::cin  >> disc;
+    std::cout << "CHOOSE A MODE 1 OR 2 : ";
+    std::cin  >> mode;
 
-    solve( disc );
-    print_fraction( -15 );
+    if (mode == 1) {
+        mode_01( disc );
+    } else {
+        mode_02( disc );
+    }
 
     return 0;
 }
