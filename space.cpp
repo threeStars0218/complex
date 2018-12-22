@@ -19,7 +19,7 @@ typedef struct _coefficient{
 } coefficient;
 
 bool is_in_h( ComplexFraction f ) {
-    return f.imag() >= 0;
+    return f.imag() > 0;
 }
 
 bool is_in_F( ComplexFraction f ) {
@@ -65,7 +65,7 @@ std::queue< coefficient > get_coefficients( long D ) {
 }
 
 ComplexFraction solution( coefficient coef ) {
-    cpx numer = cpx( - coef.B, -coef.D ),
+    cpx numer = cpx( -coef.B, -coef.D ),
         denom = cpx( 2*coef.A,  0 );
     ComplexFraction f = ComplexFraction(numer, denom);
     return f.reduce();
@@ -76,16 +76,16 @@ std::vector< ComplexFraction > sequence( std::queue< coefficient > coef ) {
     while ( !vec.empty() ) { vec.pop_back(); }
     while ( !coef.empty() ) {
         ComplexFraction f = solution( coef.front() );
-        /*
+
         bool flag = true;
         std::vector< ComplexFraction >::iterator itr=vec.begin();
         while (itr != vec.end()) {
-            if (*itr == f) flag = false;
+            if (*itr == f || itr->sl2z_equivalent(f) ) flag = false;
             ++itr;
         }
-        // if (flag) vec.push_back( f );
-        */
-        if ( is_in_F( f ) ) vec.push_back( f );
+        if (flag) vec.push_back( f );
+
+        // if ( is_in_F( f ) ) vec.push_back( f );
         coef.pop();
     }
     return vec;

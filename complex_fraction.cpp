@@ -37,6 +37,7 @@ public:
 */
     bool operator==( const ComplexFraction &rhs );
     bool operator!=( const ComplexFraction &rhs );
+    bool sl2z_equivalent(const ComplexFraction &rhs);
 
     cpx get_numer();
     cpx get_denom();
@@ -46,6 +47,7 @@ public:
     ComplexFraction conjugate();
     ComplexFraction rationarize();
     ComplexFraction reduce();
+    ComplexFraction inverse();
 
     void print();
 };
@@ -92,26 +94,45 @@ double ComplexFraction::real() {
 
 double ComplexFraction::imag() {
     ComplexFraction f;
+    double num, den;
     double res;
     if ( (this->denom).imag() != 0 ) {
         f = this->rationarize();
     } else {
         f = *this;
     }
-    res = (f.numer).imag() / (f.denom).real();
+    num = (double) sqrt( (f.numer).imag() );
+    den = (double) (f.denom).real();
+    // res = (f.numer).imag() / (f.denom).real();
+    res = num / den;
     return res;
 }
 
 double ComplexFraction::norm() {
     ComplexFraction f;
+    double num, den;
     double res;
     if ( (this->denom).imag() != 0 ) {
         f = this->rationarize();
     } else {
         f = *this;
     }
-    res = std::norm( f.numer ) / ( (f.denom).real()*(f.denom).real() );
+    num = (double) (f.numer).real() * (f.numer).real() + (f.numer).imag();
+    den = (double) (f.denom).real() * (f.denom).real();
+    res = num / den;
+    // res = num / ( (f.denom).real()*(f.denom).real() );
     return sqrt( res );
+}
+
+bool ComplexFraction::sl2z_equivalent( const ComplexFraction &f ) {
+    ComplexFraction g = this->inverse();
+    g.numer = cpx( -(g.numer).real(), -(g.numer).imag() );
+    // g = g.rationarize();
+    std::cout << "inverse of\n";
+    this->print();
+    std::cout << "is";
+    g.print();
+    return g == f;
 }
 
 ComplexFraction ComplexFraction::reduce() {
@@ -170,6 +191,12 @@ ComplexFraction ComplexFraction::operator+( const ComplexFraction &rhs ) {
     return x.rationarize();
 }
 
+ComplexFraction ComplexFraction::inverse() {
+    ComplexFraction f;
+    f.numer = this->denom;
+    f.denom = this->numer;
+    return f.rationarize();
+}
 
 ComplexFraction ComplexFraction::operator-( const ComplexFraction &rhs ) {
     ComplexFraction x;
